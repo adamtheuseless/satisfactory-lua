@@ -48,6 +48,7 @@ end
 
 function IsAnyHeaterUnderThreshold()
 	for _, heater in pairs(Heaters) do
+		print(heater, heater:getFuelAmount())
 		if heater:getFuelAmount() <= FuelTransferThreshold then
 			return true
 		end
