@@ -6,11 +6,18 @@ FuelTransferThreshold = 1
 -- :getCurrentHeat() returns heat in degrees C
 -- :getCO2Amount()
 
-OutputSplitters = component.proxy(component.findComponent("HeaterInput"))
+OutputSplitters = {} --component.proxy(component.findComponent("HeaterInput"))
 InputSplitter = component.proxy(component.findComponent("FuelInput"))[1]
 
 Heaters = {}
 Routings = {}
+
+-- Fill splitter list
+for key, splitter in pairs(component.proxy(component.findComponent(findClass("CodeableSplitter_C")))) do
+	if splitter ~= InputSplitter then
+		OutputSplitters[key] = splitter
+	end
+end
 
 function GetHeater(splitter, outputIndex)
 	local connector0 = splitter:getFactoryConnectors()[outputIndex] --splitter output connector
