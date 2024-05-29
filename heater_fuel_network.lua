@@ -17,14 +17,14 @@ function GetHeater(splitter, outputIndex)
 	local connector1 = connector0:getConnected() --belt input connector
 
 	if connector1 == nil then
-		return nil
+		return nil, nil
 	else
 		local belt = connector1.owner
 		local connector2 = belt:getFactoryConnectors()[2] --belt output connector
 		local connector3 = connector2:getConnected() --heater input connector
 		local heater = connector3.owner
 
-		return heater
+		return connector0, heater
 	end
 end
 
@@ -32,13 +32,15 @@ function InitializeFuelNetwork()
     for _, splitter in pairs(OutputSplitters) do
         event.listen(splitter)
 
-        local heaterL = GetHeater(splitter, 1) --left
+        local key, heaterL = GetHeater(splitter, 1) --left
         if heaterL ~= nil then
+			Heaters[key] = heaterL
             event.listen(heaterL)
         end
 
-        local heaterR = GetHeater(splitter, 3) --right
+        local key, heaterR = GetHeater(splitter, 3) --right
         if heaterR ~= nil then
+			Heaters[key] = heaterL
             event.listen(heaterR)
         end
 
